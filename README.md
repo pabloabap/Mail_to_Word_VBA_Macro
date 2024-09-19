@@ -52,4 +52,4 @@ que se utilizara como fuente de la lista del formulario.
 ____**MEJORAS**____
 - Si un word ya está abierto poder escribir en él.
 - Gestion de errores
-- Sugerencia de ruta en base al email del emisario.
+- Sugerencia de ruta en base al email del emisor.
