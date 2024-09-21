@@ -25,15 +25,33 @@ Public Sub sAppendToWord(ByRef dContent As Scripting.Dictionary, _
     sSaveAndClose wdApp, wdDoc, DocPath
 End Sub
 
-
 Private Sub sOpenWord( _
     ByRef wdApp As word.Application, _
     ByRef wdDoc As word.document, _
     ByVal wdPath As String _
 )
-    ' Description: Open or create a Word file
-    Set wdApp = CreateObject("Word.Application")
+    On Error Resume Next
+        Set wdApp = GetObject(, "Word.Application")
+    On Error GoTo NO_WORD_FOUND
+    If wdApp Is Nothing Then
+        GoTo NO_WORD_FOUND
+    Else
+        For Each wdDoc In wdApp.Documents
+            If wdDoc.FullName = wdPath Then
+                wdApp.Visible = True
+                wdDoc.Activate
+                Exit Sub
+            End If
+        Next
+    End If
+        GoTo NO_WORD_FOUND
+    Exit Sub
+NO_WORD_FOUND:
+    If wdApp Is Nothing Then
+        Set wdApp = CreateObject("Word.Application")
+    End If
     Set wdDoc = wdApp.Documents.Open(wdPath, Visible:=True)
+    wdApp.Visible = True
     wdDoc.Activate
 End Sub
 
