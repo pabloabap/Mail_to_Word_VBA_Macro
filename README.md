@@ -5,15 +5,17 @@ Creation date: 19/09/2024
 
 --------------------------------------------------------
 
-____**Referencias activadas**____
+# Referencias activadas
 - Visual Basic For Applications
 - Microsoft Outlook 16.0 Object Library
 - OLE Automation
 - Microsoft Office 16.0 Object Library
+- Microsoft Excel 16.0 Object Library
 - Microsoft Forms 2.0 Object Library
 - Microsoft Word 16.0 Object Library
 - Microsoft Scripting Runtime
 
+# Descripción
 Programa para cargar el texto selecionado de un mensaje
 de Outlook activo en un word. La ruta a los posibles ficheros
 word en los que cargar la información se obtiene de un Excel
@@ -29,7 +31,7 @@ Al principio de la macro se muestra el formulario `UserForm1`.
 Contiene una lista de las rutas disponibles para que el usuario
 seleccione el fichero donde quiera cargar la información.
 
-____ *Estructura de modulos**____
+# Estructura de módulos
 - [`UserForm`](/UserForm1.frm) Formulario con ListBox y dos botones  
 (Aceptar y Cancelar) para que el usuario pueda seleccionar el fichero de 
 destino de una lista de opciones.
@@ -49,7 +51,11 @@ del diccionario del modulo anterior al final de un ficheor word.
 la tabla del Excel que contiene las rutas de los ficheros en un array
 que se utilizara como fuente de la lista del formulario.
 
-____**MEJORAS**____
-- Si un word ya está abierto poder escribir en él.
-- Gestion de errores
-- Sugerencia de ruta en base al email del emisor.
+# Mejoras
+- [x] Si un word ya está abierto poder escribir en él.
+- [ ] Poder utilizar el Excel de rutas en la lista del formulario cuando el Excel esté abierto.
+- [ ] Incorporar constantes globales en el modulo principal con los valores genéricos de la macro y que otra persona
+pueda ajustarlos a sus necesidades. Por ejemplo, la ruta del fichero Excel o el nombre de la tabla del fichero.
+- [ ] Gestion de errores.
+- [ ] Sugerencia de ruta en base al email del emisor.
+
