@@ -2,7 +2,7 @@ Attribute VB_Name = "M03_AppendToWord"
 ' =======================================================
 ' Author: Pablo Abad Aparicio  (pablo.abad96@gmail.com)
 ' Creation date: 19/09/2024
-' Description: Añade elementos seleccionados a un word.
+' Description: Aï¿½ade elementos seleccionados a un word.
 ' =======================================================
 Option Explicit
 Option Private Module
@@ -11,35 +11,35 @@ Public Sub sAppendToWord(ByRef dContent As Scripting.Dictionary, _
     ByVal DocPath As String _
 )
     Dim i                       As Integer
-    Dim wdApp                   As word.Application
-    Dim wdDoc                   As word.document
+    Dim oWdApp                  As word.Application
+    Dim oWdDoc                  As word.document
     Dim aArrOfStrs(5)           As String
     
     Let i = 0
-    sOpenWord wdApp, wdDoc, DocPath
+    sOpenWord oWdApp, oWdDoc, DocPath
     fFillArr aArrOfStrs, dContent
     While i <= UBound(aArrOfStrs)
-        sInsertTextAtEndOfDocument aArrOfStrs(i), wdDoc, wdApp
+        sInsertTextAtEndOfDocument aArrOfStrs(i), oWdDoc, oWdApp
         i = i + 1
     Wend
-    sSaveAndClose wdApp, wdDoc, DocPath
+    sSaveAndClose oWdApp, oWdDoc, DocPath
 End Sub
 
 Private Sub sOpenWord( _
-    ByRef wdApp As word.Application, _
-    ByRef wdDoc As word.document, _
-    ByVal wdPath As String _
+    ByRef oWdApp As word.Application, _
+    ByRef oWdDoc As word.document, _
+    ByVal sWdPath As String _
 )
     On Error Resume Next
-        Set wdApp = GetObject(, "Word.Application")
+        Set oWdApp = GetObject(, "Word.Application")
     On Error GoTo NO_WORD_FOUND
-    If wdApp Is Nothing Then
+    If oWdApp Is Nothing Then
         GoTo NO_WORD_FOUND
     Else
-        For Each wdDoc In wdApp.Documents
-            If wdDoc.FullName = wdPath Then
-                wdApp.Visible = True
-                wdDoc.Activate
+        For Each oWdDoc In oWdApp.Documents
+            If oWdDoc.FullName = sWdPath Then
+                oWdApp.Visible = True
+                oWdDoc.Activate
                 Exit Sub
             End If
         Next
@@ -47,12 +47,12 @@ Private Sub sOpenWord( _
         GoTo NO_WORD_FOUND
     Exit Sub
 NO_WORD_FOUND:
-    If wdApp Is Nothing Then
-        Set wdApp = CreateObject("Word.Application")
+    If oWdApp Is Nothing Then
+        Set oWdApp = CreateObject("Word.Application")
     End If
-    Set wdDoc = wdApp.Documents.Open(wdPath, Visible:=True)
-    wdApp.Visible = True
-    wdDoc.Activate
+    Set oWdDoc = oWdApp.Documents.Open(sWdPath, Visible:=True)
+    oWdApp.Visible = True
+    oWdDoc.Activate
 End Sub
 
 Private Sub fFillArr( _
@@ -70,34 +70,35 @@ End Sub
 
 'Append text at the end of the document
 Private Sub sInsertTextAtEndOfDocument( _
-    ByVal textToAppend As String, _
-    ByVal wdDoc As word.document, _
-    ByVal wdApp As word.Application _
+    ByVal sTextToAppend As String, _
+    ByVal oWdDoc As word.document, _
+    ByVal oWdApp As word.Application _
 )
-    Dim isAtBeginningOfLine As Boolean
-    Dim isAtEndOfLine       As Boolean
+    Dim bIsAtBeginningOfLine As Boolean
+    Dim bIsAtEndOfLine       As Boolean
     
-    wdApp.Selection.EndKey Unit:=wdStory
-    Let isAtBeginningOfLine = (wdApp.Selection.Start = wdApp.Selection.Paragraphs(1).Range.Start)
-    Let isAtEndOfLine = (wdApp.Selection.End = wdApp.Selection.Paragraphs(1).Range.End - 1)
-    If isAtEndOfLine And Not isAtBeginningOfLine Then
-        wdDoc.content.InsertAfter text:=vbCrLf
+    oWdApp.Selection.EndKey Unit:=wdStory
+    Let bIsAtBeginningOfLine = (oWdApp.Selection.Start = oWdApp.Selection.Paragraphs(1).Range.Start)
+    Let bIsAtEndOfLine = (oWdApp.Selection.End = oWdApp.Selection.Paragraphs(1).Range.End - 1)
+    If bIsAtEndOfLine And Not bIsAtBeginningOfLine Then
+        oWdDoc.content.InsertAfter text:=vbCrLf
     End If
-    wdDoc.content.InsertAfter text:=textToAppend & vbCrLf
+    oWdDoc.content.InsertAfter text:=sTextToAppend & vbCrLf
 End Sub
 
-' Save changes done in `wdDoc` as `wdPath` and close Word app and document
+' Save changes done in `oWdDoc` as `sWdPath` and close Word app and document
 Private Sub sSaveAndClose( _
-    ByRef wdApp As word.Application, _
-    ByRef wdDoc As word.document, _
-    ByVal wdPath As String _
+    ByRef oWdApp As word.Application, _
+    ByRef oWdDoc As word.document, _
+    ByVal sWdPath As String _
 )
-    wdDoc.SaveAs2 FileName:=wdPath
-    wdApp.Selection.EndKey Unit:=wdStory
-    wdApp.Visible = True
-    wdApp.Activate
-    'wdDoc.Close
-    'wdApp.Quit
+    oWdDoc.SaveAs2 FileName:=sWdPath
+    oWdApp.Selection.EndKey Unit:=wdStory
+    oWdApp.Visible = True
+    oWdApp.Activate
+    ' Si queres cerrar automaticamente el documento con los cambios descomentar las dos lineas siguientes.
+    'oWdDoc.Close
+    'oWdApp.Quit
 End Sub
 
 

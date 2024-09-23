@@ -16,7 +16,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Public Sub UserForm_Initialize()
-    isCancelled = False
+    gbIsCancelled = False
     With ListBox1
         .List() = fExcelTableToList()
         .ColumnWidths = CStr(.Width * 0.2) & ";" & CStr(.Width * 0.8)
@@ -33,7 +33,7 @@ Public Sub ListBox1_Click()
 End Sub
 
 Private Sub btnCancel_Click()
-    isCancelled = True
+    gbIsCancelled = True
     Unload UserForm1
 End Sub
 
@@ -43,7 +43,7 @@ End Sub
 
 Private Sub UserForm_QueryClose(Cancel As Integer, CloseMode As Integer)
     If CloseMode = 0 Then
-        isCancelled = True
+        gbIsCancelled = True
         Unload UserForm1
     End If
 End Sub

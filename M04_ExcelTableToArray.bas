@@ -7,39 +7,37 @@ Attribute VB_Name = "M04_ExcelTableToArray"
 Option Explicit
 
 Function fExcelTableToList() As Variant
-    Dim sXlsPath        As String               ' Ruta del fichero
     Dim oXlsApp         As Excel.Application    ' Instancia de Aplicacion de Excel
     Dim oXlsWorkbook    As Excel.Workbook       ' Instancia de Workbook de Excel
-    Dim oXlsTable       As Variant              ' Array con el contenido de la tabla
+    Dim vXlsTable       As Variant              ' Array con el contenido de la tabla
     
-    Let sXlsPath = "C:\Users\pablo\Desktop\testSources.xlsx"
     Set oXlsApp = CreateObject("Excel.Application")
-    Set oXlsWorkbook = oXlsApp.Workbooks.Open(FileName:=sXlsPath, ReadOnly:=True)
+    Set oXlsWorkbook = oXlsApp.Workbooks.Open(FileName:=gsEXCEL_PATH, ReadOnly:=True)
     With oXlsApp
         With oXlsWorkbook
             .Activate
-            oXlsTable = fGetTableAsArray(.Sheets("Sheet1"), "Ficheros")
+            vXlsTable = fGetTableAsArray(.Sheets(gsEXCEL_SHEET_NAME), gsEXCEL_TABLE_NAME)
         End With
         .Quit
     End With
-    fExcelTableToList = oXlsTable
+    fExcelTableToList = vXlsTable
 End Function
 
 Private Function fGetTableAsArray(Sheet As Excel.Worksheet, TableName As String) As Variant
-    Dim tbl As ListObject
-    Dim arr As Variant
-    Dim i   As Long
-    Dim j   As Long
+    Dim loTbl   As ListObject
+    Dim arr     As Variant
+    Dim i       As Long
+    Dim j       As Long
 
-    Set tbl = Sheet.ListObjects(TableName)
-    If tbl Is Nothing Then
+    Set loTbl = Sheet.ListObjects(TableName)
+    If loTbl Is Nothing Then
         MsgBox "Table '" & TableName & "' not found on sheet '" & Sheet.Name & "'."
         Exit Function
     End If
-    ReDim arr(1 To tbl.ListRows.Count, 1 To tbl.ListColumns.Count)
-    For i = 1 To tbl.ListRows.Count
-        For j = 1 To tbl.ListColumns.Count
-            arr(i, j) = tbl.ListRows(i).Range.Cells(1, j).Value
+    ReDim arr(1 To loTbl.ListRows.Count, 1 To loTbl.ListColumns.Count)
+    For i = 1 To loTbl.ListRows.Count
+        For j = 1 To loTbl.ListColumns.Count
+            arr(i, j) = loTbl.ListRows(i).Range.Cells(1, j).Value
         Next j
     Next i
     fGetTableAsArray = arr
