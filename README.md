@@ -18,7 +18,7 @@ Creation date: 19/09/2024
 # Descripción
 > **IMPORTANTE** 
 > 
-> Antes de ejecutar la macro recurda definir las variables
+> Antes de ejecutar la macro recuerda definir las variables
 > globales `gsEXCEL_PATH`, `gsEXCEL_SHEET_NAME` y `gsEXCEL_TABLE_NAME`
 > que están al principio del módulo [`M01_MailsToWord.bas`](/M01_MailsToWord.bas).
 
